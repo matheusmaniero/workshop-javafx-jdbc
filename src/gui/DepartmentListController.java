@@ -45,9 +45,10 @@ public class DepartmentListController implements Initializable {
 	@FXML
 	public void onBtNewAction(ActionEvent event) {
 		Stage parentStage = Utils.currentStage(event);
-		this.createDialogForm("/gui/DepartmentForm.fxml", parentStage );
+		Department obj = new Department();
+		this.createDialogForm(obj, "/gui/DepartmentForm.fxml", parentStage);
 	}
-	
+
 	private ObservableList<Department> obsList;
 
 	@Override
@@ -68,53 +69,39 @@ public class DepartmentListController implements Initializable {
 		tableViewDepartment.prefHeightProperty().bind(stage.heightProperty());
 
 	}
-	
+
 	public void updateTableView() {
-		
+
 		if (this.service == null) {
 			throw new IllegalCallerException("DepartmentService has not instantiate.");
-		}		
-		
+		}
+
 		List<Department> list = this.service.findAll();
 		obsList = FXCollections.observableArrayList(list);
 		tableViewDepartment.setItems(obsList);
-		
+
 	}
-	
-	public void createDialogForm(String absoluteName,Stage parentStage) {
+
+	public void createDialogForm(Department obj, String absoluteName, Stage parentStage) {
 		try {
-			
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-		Pane pane = loader.load();
-		Stage dialogStage = new Stage();
-		dialogStage.setTitle("Enter department data");
-		dialogStage.setScene(new Scene(pane));
-		dialogStage.setResizable(false);
-		dialogStage.initOwner(parentStage);
-		dialogStage.initModality(Modality.WINDOW_MODAL);
-		dialogStage.showAndWait();
-		
-		
-		
-		}catch(IOException e) {
+
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+			Pane pane = loader.load();
+			DepartmentFormController controller = loader.getController();
+			controller.setDepartment(obj);
+			controller.updateFormData();
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Enter department data");
+			dialogStage.setScene(new Scene(pane));
+			dialogStage.setResizable(false);
+			dialogStage.initOwner(parentStage);
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
 			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
-		
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }
