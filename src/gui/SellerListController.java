@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -24,6 +27,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Seller;
 import model.services.SellerService;
@@ -63,7 +68,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 	public void onBtNewAction(ActionEvent event) {
 		Stage parentStage = Utils.currentStage(event);
 		Seller obj = new Seller();
-		//this.createDialogForm(obj, "/gui/SellerForm.fxml", parentStage);
+		this.createDialogForm(obj, "/gui/SellerForm.fxml", parentStage);
 	}
 
 	private ObservableList<Seller> obsList;
@@ -106,7 +111,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 
 	}
 
-	/*
+	
 	public void createDialogForm(Seller obj, String absoluteName, Stage parentStage) {
 		try {
 
@@ -118,7 +123,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 			controller.setSellerService(new SellerService());
 			controller.subscribeDataChangeListener(this);
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Enter department data");
+			dialogStage.setTitle("Enter Seller Data");
 			dialogStage.setScene(new Scene(pane));
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
@@ -131,7 +136,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 
 	}
 	
-	*/
+	
 
 	@Override
 	public void ondDataChanged() {
@@ -152,8 +157,8 @@ public class SellerListController implements Initializable, DataChangeListener {
 					return;
 				}
 				setGraphic(button);
-				//button.setOnAction(
-				//		event -> createDialogForm(obj, "/gui/SellerForm.fxml", Utils.currentStage(event)));
+				button.setOnAction(
+						event -> createDialogForm(obj, "/gui/SellerForm.fxml", Utils.currentStage(event)));
 			}
 		});
 	}
